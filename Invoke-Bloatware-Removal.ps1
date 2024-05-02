@@ -1,22 +1,36 @@
-# Windows 10 Bloatware removal tool
+<#
+    .SYNOPSIS 
+    Windows 10 Software packaging wrapper
 
-![GitHub repo size](https://img.shields.io/github/repo-size/niklasrast/Windows-10-Bloatware-Removal-Tool)
+    .DESCRIPTION
+    Install:   C:\Windows\SysNative\WindowsPowershell\v1.0\PowerShell.exe -ExecutionPolicy Bypass -Command .\INSTALL-BloatwareRemoval.ps1
+    
+    .ENVIRONMENT
+    PowerShell 5.0
+    
+    .AUTHOR
+    Niklas Rast
+#>
 
-![GitHub issues](https://img.shields.io/github/issues-raw/niklasrast/Windows-10-Bloatware-Removal-Tool)
+$ErrorActionPreference = "SilentlyContinue"
+#Use "C:\Windows\Logs" for System Installs and "$env:TEMP" for User Installs
+$logFile = ('{0}\{1}.log' -f "C:\Windows\Logs", [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name))
 
-![GitHub last commit](https://img.shields.io/github/last-commit/niklasrast/Windows-10-Bloatware-Removal-Tool)
+#Test if registry folder exists
+if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\COMPANY")) {
+    New-Item -Path "HKLM:\SOFTWARE\" -Name "COMPANY" -Force
+}
 
-This repo contains an powershell scripts to remove bloatware applications from any windows 10 installation.
+Start-Transcript -path $logFile
 
-## Install:
-```powershell
-C:\Windows\SysNative\WindowsPowershell\v1.0\PowerShell.exe -ExecutionPolicy Bypass -Command .\Invoke-Bloatware-Removal.ps1
-```
-
-## Bloatware list:
-If you need some apps simply put # infront of the line to make the line a comment and powershell will not remove the app of this line.
-```powershell
+Write-Output "Uninstalling default apps"
 $apps = @(
+    # default Windows 11 apps
+    "MicrosoftTeams"
+    "Microsoft.PowerAutomateDesktop"
+    "Microsoft.Todos"
+    "Microsoft.GamingApp"
+    
     # default Windows 10 apps
     "Microsoft.3DBuilder"
     "Microsoft.Appconnector"
@@ -31,7 +45,7 @@ $apps = @(
     "Microsoft.MicrosoftOfficeHub"
     "Microsoft.MicrosoftPowerBIForWindows"
     "Microsoft.MicrosoftSolitaireCollection"
-    #"Microsoft.MicrosoftStickyNotes"
+    "Microsoft.MicrosoftStickyNotes"
     "Microsoft.MinecraftUWP"
     "Microsoft.NetworkSpeedTest"
     "Microsoft.Office.OneNote"
@@ -49,16 +63,14 @@ $apps = @(
     "Microsoft.WindowsPhone"
     "Microsoft.WindowsSoundRecorder"
     #"Microsoft.WindowsStore"   # can't be re-installed, DO NOT REMOVE
-    #"Microsoft.Xbox.TCUI"
-    #"Microsoft.XboxApp"
-    #"Microsoft.XboxGameOverlay"
-    #"Microsoft.XboxGamingOverlay"
-    #"Microsoft.XboxSpeechToTextOverlay"
-    #"Microsoft.YourPhone"
+    "Microsoft.Xbox.TCUI"
+    "Microsoft.XboxApp"
+    "Microsoft.XboxGameOverlay"
+    "Microsoft.XboxGamingOverlay"
+    "Microsoft.XboxSpeechToTextOverlay"
+    "Microsoft.YourPhone"
     "Microsoft.ZuneMusic"
     "Microsoft.ZuneVideo"
-
-    # Threshold 2 apps
     "Microsoft.CommsPhone"
     "Microsoft.ConnectivityStore"
     "Microsoft.GetHelp"
@@ -67,24 +79,19 @@ $apps = @(
     "Microsoft.Office.Sway"
     "Microsoft.OneConnect"
     "Microsoft.WindowsFeedbackHub"
-
-    # Creators Update apps
     "Microsoft.Microsoft3DViewer"
     #"Microsoft.MSPaint"
-
-    #Redstone apps
     "Microsoft.BingFoodAndDrink"
     "Microsoft.BingHealthAndFitness"
     "Microsoft.BingTravel"
     "Microsoft.WindowsReadingList"
-
-    # Redstone 5 apps
     "Microsoft.MixedReality.Portal"
     "Microsoft.ScreenSketch"
     "Microsoft.XboxGamingOverlay"
     "Microsoft.YourPhone"
+    "Microsoft.Advertising.Xaml"
 
-    # non-Microsoft
+    #3-Party bloatware
     "2FE3CB00.PicsArt-PhotoStudio"
     "46928bounde.EclipseManager"
     "4DF9E0F8.Netflix"
@@ -125,29 +132,23 @@ $apps = @(
     "king.com.BubbleWitch3Saga"
     "king.com.CandyCrushSaga"
     "king.com.CandyCrushSodaSaga"
-
-    # apps which cannot be removed using Remove-AppxPackage
-    #"Microsoft.BioEnrollment"
-    #"Microsoft.MicrosoftEdge"
-    #"Microsoft.Windows.Cortana"
-    #"Microsoft.WindowsFeedback"
-    #"Microsoft.XboxGameCallableUI"
-    #"Microsoft.XboxIdentityProvider"
-    #"Windows.ContactSupport"
-
-    # apps which other apps depend on
-    "Microsoft.Advertising.Xaml"
+    "Disney.37853FC22B2CE"
+    "Clipchamp.Clipchamp"
+    "Facebook.InstagramBeta"
+    "FACEBOOK.FACEBOOK"
+    "BytedancePte.Ltd.TikTok"
+    "AmazonVideo.PrimeVideo"   
 )
-```
- 
-## Logfiles:
-The scripts create a logfile with the name of the .ps1 script in the folder C:\Windows\Logs.
 
-## Requirements:
-- PowerShell 5.0
-- Windows 10 or later
+foreach ($app in $apps) {
+    Write-Output "Trying to remove $app"
 
-# Feature requests
-If you have an idea for a new feature in this repo, send me an issue with the subject Feature request and write your suggestion in the text. I will then check the feature and implement it if necessary.
+    Get-AppxPackage -Name $app -AllUsers | Remove-AppxPackage -AllUsers
+    Get-AppXProvisionedPackage -Online | Where-Object DisplayName -EQ $app | Remove-AppxProvisionedPackage -Online
+}
 
-Created by @niklasrast 
+    #Register package in registry
+    New-Item -Path "HKLM:\SOFTWARE\COMPANY\" -Name "BloatwareRemoval"
+    New-ItemProperty -Path "HKLM:\SOFTWARE\COMPANY\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "2.0.0" -Force
+
+Stop-Transcript
