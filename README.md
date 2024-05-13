@@ -1,10 +1,4 @@
-# Windows 10 Bloatware removal tool
-
-![GitHub repo size](https://img.shields.io/github/repo-size/niklasrast/Windows-10-Bloatware-Removal-Tool)
-
-![GitHub issues](https://img.shields.io/github/issues-raw/niklasrast/Windows-10-Bloatware-Removal-Tool)
-
-![GitHub last commit](https://img.shields.io/github/last-commit/niklasrast/Windows-10-Bloatware-Removal-Tool)
+# 🧹 Windows Bloatware removal 🧹
 
 This repo contains an powershell scripts to remove bloatware applications from any windows 10 installation.
 
@@ -143,11 +137,13 @@ $apps = @(
 ## Logfiles:
 The scripts create a logfile with the name of the .ps1 script in the folder C:\Windows\Logs.
 
-## Requirements:
-- PowerShell 5.0
-- Windows 10 or later
+## 🤝 Contributing
 
-# Feature requests
-If you have an idea for a new feature in this repo, send me an issue with the subject Feature request and write your suggestion in the text. I will then check the feature and implement it if necessary.
+Before making your first contribution please see the following guidelines:
+1. [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
+1. [Git Tutorials](https://www.youtube.com/playlist?list=PLu-nSsOS6FRIg52MWrd7C_qSnQp3ZoHwW)
+1. [Create a PR from a pushed branch](https://learn.microsoft.com/en-us/azure/devops/repos/git/pull-requests?view=azure-devops&tabs=browser#from-a-pushed-branch)
 
-Created by @niklasrast 
+## 🤴 Author
+
+[**Niklas Rast**](https://teams.microsoft.com/l/chat/0/0?users=n.rast@fraport.de)
