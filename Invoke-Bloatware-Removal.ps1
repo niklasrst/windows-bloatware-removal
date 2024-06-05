@@ -1,12 +1,12 @@
 <#PSScriptInfo
 
-.VERSION 3.0.0
+.VERSION 3.0.1
 
 .GUID 2e2154c3-846b-4e7c-ba11-95ff177c7de0
 
 .AUTHOR Niklas Rast
 
-.FraportAGNAME Niklas Rast
+.COMPANYNAME Niklas Rast
 
 .COPYRIGHT Niklas Rast
 
@@ -53,6 +53,7 @@ $apps = @(
     #"Microsoft.PowerAutomateDesktop"
     #"Microsoft.Todos"
     "Microsoft.GamingApp"
+    "Microsoft.549981C3F5F10" #Cortana
     
     # default Windows 10 apps
     "Microsoft.3DBuilder"
