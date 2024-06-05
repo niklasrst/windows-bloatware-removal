@@ -1,24 +1,47 @@
-<#
-    .SYNOPSIS 
-    Windows 10 Software packaging wrapper
+<#PSScriptInfo
 
-    .DESCRIPTION
-    Install:   C:\Windows\SysNative\WindowsPowershell\v1.0\PowerShell.exe -ExecutionPolicy Bypass -Command .\INSTALL-BloatwareRemoval.ps1
-    
-    .ENVIRONMENT
-    PowerShell 5.0
-    
-    .AUTHOR
-    Niklas Rast
+.VERSION 3.0.0
+
+.GUID 2e2154c3-846b-4e7c-ba11-95ff177c7de0
+
+.AUTHOR Niklas Rast
+
+.FraportAGNAME Niklas Rast
+
+.COPYRIGHT Niklas Rast
+
+.TAGS 
+
+.LICENSEURI 
+
+.PROJECTURI 
+
+.ICONURI 
+
+.EXTERNALMODULEDEPENDENCIES 
+
+.REQUIREDSCRIPTS 
+
+.EXTERNALSCRIPTDEPENDENCIES 
+
+.RELEASENOTES
+
 #>
+
+<# 
+
+.DESCRIPTION 
+ Remove Bloatware from an Windows system 
+
+#> 
 
 $ErrorActionPreference = "SilentlyContinue"
 #Use "C:\Windows\Logs" for System Installs and "$env:TEMP" for User Installs
-$logFile = ('{0}\{1}.log' -f "C:\Windows\Logs", [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name))
+$logFile = "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\BloatwareRemoval.log"
 
 #Test if registry folder exists
-if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\COMPANY")) {
-    New-Item -Path "HKLM:\SOFTWARE\" -Name "COMPANY" -Force
+if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\FraportAG")) {
+    New-Item -Path "HKLM:\SOFTWARE\" -Name "FraportAG" -Force
 }
 
 Start-Transcript -path $logFile
@@ -26,9 +49,9 @@ Start-Transcript -path $logFile
 Write-Output "Uninstalling default apps"
 $apps = @(
     # default Windows 11 apps
-    "MicrosoftTeams"
-    "Microsoft.PowerAutomateDesktop"
-    "Microsoft.Todos"
+    #"MicrosoftTeams"
+    #"Microsoft.PowerAutomateDesktop"
+    #"Microsoft.Todos"
     "Microsoft.GamingApp"
     
     # default Windows 10 apps
@@ -43,7 +66,7 @@ $apps = @(
     "Microsoft.GamingServices"
     "Microsoft.Microsoft3DViewer"
     "Microsoft.MicrosoftOfficeHub"
-    "Microsoft.MicrosoftPowerBIForWindows"
+    #"Microsoft.MicrosoftPowerBIForWindows"
     "Microsoft.MicrosoftSolitaireCollection"
     "Microsoft.MicrosoftStickyNotes"
     "Microsoft.MinecraftUWP"
@@ -55,7 +78,7 @@ $apps = @(
     "Microsoft.SkypeApp"
     "Microsoft.Wallet"
     #"Microsoft.Windows.Photos"
-    "Microsoft.WindowsAlarms"
+    #"Microsoft.WindowsAlarms"
     #"Microsoft.WindowsCalculator"
     #"Microsoft.WindowsCamera"
     "microsoft.windowscommunicationsapps"
@@ -121,7 +144,6 @@ $apps = @(
     "PandoraMediaInc.29680B314EFC2"
     "Playtika.CaesarsSlotsFreeCasino"
     "ShazamEntertainmentLtd.Shazam"
-    "SpotifyAB.SpotifyMusic"
     "TheNewYorkTimes.NYTCrossword"
     "ThumbmunkeysLtd.PhototasticCollage"
     "TuneIn.TuneInRadio"
@@ -148,7 +170,7 @@ foreach ($app in $apps) {
 }
 
     #Register package in registry
-    New-Item -Path "HKLM:\SOFTWARE\COMPANY\" -Name "BloatwareRemoval"
-    New-ItemProperty -Path "HKLM:\SOFTWARE\COMPANY\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "2.0.0" -Force
+    New-Item -Path "HKLM:\SOFTWARE\FraportAG\" -Name "BloatwareRemoval"
+    New-ItemProperty -Path "HKLM:\SOFTWARE\FraportAG\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "3.0.0" -Force
 
 Stop-Transcript
