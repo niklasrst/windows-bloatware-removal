@@ -1,6 +1,6 @@
 <#PSScriptInfo
 
-.VERSION 3.0.1
+.VERSION 3.0.2
 
 .GUID 2e2154c3-846b-4e7c-ba11-95ff177c7de0
 
@@ -49,11 +49,13 @@ Start-Transcript -path $logFile
 Write-Output "Uninstalling default apps"
 $apps = @(
     # default Windows 11 apps
-    #"MicrosoftTeams"
-    #"Microsoft.PowerAutomateDesktop"
-    #"Microsoft.Todos"
+    "MicrosoftTeams"
+    "Microsoft.PowerAutomateDesktop"
+    "Microsoft.Todos"
     "Microsoft.GamingApp"
     "Microsoft.549981C3F5F10" #Cortana
+    "Microsoft.OutlookForWindows_8wekyb3d8bbwe"
+    "Microsoft.Windows.DevHome_8wekyb3d8bbwe"
     
     # default Windows 10 apps
     "Microsoft.3DBuilder"
