@@ -54,8 +54,8 @@ $apps = @(
     "Microsoft.Todos"
     "Microsoft.GamingApp"
     "Microsoft.549981C3F5F10" #Cortana
-    "Microsoft.OutlookForWindows_8wekyb3d8bbwe"
-    "Microsoft.Windows.DevHome_8wekyb3d8bbwe"
+    "Microsoft.OutlookForWindows"
+    "Microsoft.Windows.DevHome"
     
     # default Windows 10 apps
     "Microsoft.3DBuilder"
@@ -174,6 +174,6 @@ foreach ($app in $apps) {
 
     #Register package in registry
     New-Item -Path "HKLM:\SOFTWARE\FraportAG\" -Name "BloatwareRemoval"
-    New-ItemProperty -Path "HKLM:\SOFTWARE\FraportAG\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "3.0.0" -Force
+    New-ItemProperty -Path "HKLM:\SOFTWARE\FraportAG\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "3.0.2" -Force
 
 Stop-Transcript
