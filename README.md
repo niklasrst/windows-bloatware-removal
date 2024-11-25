@@ -147,3 +147,7 @@ Before making your first contribution please see the following guidelines:
 ## 🤴 Author
 
 [**Niklas Rast**](https://teams.microsoft.com/l/chat/0/0?users=n.rast@fraport.de)
+
+---
+
+Made with ❤️ by [Niklas Rast](https://github.com/niklasrst)
