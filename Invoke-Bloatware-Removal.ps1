@@ -1,6 +1,6 @@
 <#PSScriptInfo
 
-.VERSION 3.0.2
+.VERSION 3.0.4
 
 .GUID 2e2154c3-846b-4e7c-ba11-95ff177c7de0
 
@@ -49,13 +49,25 @@ Start-Transcript -path $logFile
 Write-Output "Uninstalling default apps"
 $apps = @(
     # default Windows 11 apps
-    "MicrosoftTeams"
     "Microsoft.PowerAutomateDesktop"
     "Microsoft.Todos"
-    "Microsoft.GamingApp"
+    #"Microsoft.OutlookForWindows"
     "Microsoft.549981C3F5F10" #Cortana
-    "Microsoft.OutlookForWindows"
+    "MicrosoftTeams"
     "Microsoft.DevHome"
+    "Microsoft.WindowsFeedbackHub"
+    "Clipchamp.Clipchamp"
+    "Microsoft.BingNews"
+    "Microsoft.MicrosoftSolitaireCollection"
+    "Microsoft.MicrosoftStickyNotes"
+    "Microsoft.Xbox.TCUI"          
+    "Microsoft.XboxGamingOverlay"        
+    "Microsoft.XboxIdentityProvider"        
+    "Microsoft.XboxSpeechToTextOverlay"
+    "Microsoft.XboxGameCallableUI"
+    "MicrosoftCorporationII.QuickAssist"
+    "Microsoft.Windows.DevHome"
+    "Microsoft.GamingApp"
     
     # default Windows 10 apps
     "Microsoft.3DBuilder"
@@ -112,7 +124,7 @@ $apps = @(
     "Microsoft.BingTravel"
     "Microsoft.WindowsReadingList"
     "Microsoft.MixedReality.Portal"
-    "Microsoft.ScreenSketch"
+    #"Microsoft.ScreenSketch"
     "Microsoft.XboxGamingOverlay"
     "Microsoft.YourPhone"
     "Microsoft.Advertising.Xaml"
@@ -174,6 +186,6 @@ foreach ($app in $apps) {
 
     #Register package in registry
     New-Item -Path "HKLM:\SOFTWARE\FraportAG\" -Name "BloatwareRemoval"
-    New-ItemProperty -Path "HKLM:\SOFTWARE\FraportAG\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "3.0.3" -Force
+    New-ItemProperty -Path "HKLM:\SOFTWARE\FraportAG\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "3.0.4" -Force
 
 Stop-Transcript
