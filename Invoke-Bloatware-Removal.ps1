@@ -1,58 +1,36 @@
-<#PSScriptInfo
+<#
+.SYNOPSIS
+   Remove Windows bloatware and default apps from the system.
 
-.VERSION 3.0.4
+.DESCRIPTION
+    This script removes default Windows apps and bloatware from the system.
+    It also creates a registry entry to track the version of the script and to act as a install detection.
 
-.GUID 2e2154c3-846b-4e7c-ba11-95ff177c7de0
+.EXAMPLE
+   .\invoke-Bloatware-Removal.ps1
 
-.AUTHOR Niklas Rast
+.LINK
+   https://github.com/niklasrst/windows-bloatware-removal
 
-.COMPANYNAME Niklas Rast
-
-.COPYRIGHT Niklas Rast
-
-.TAGS 
-
-.LICENSEURI 
-
-.PROJECTURI 
-
-.ICONURI 
-
-.EXTERNALMODULEDEPENDENCIES 
-
-.REQUIREDSCRIPTS 
-
-.EXTERNALSCRIPTDEPENDENCIES 
-
-.RELEASENOTES
-
-#>
-
-<# 
-
-.DESCRIPTION 
- Remove Bloatware from an Windows system 
-
+.AUTHOR
+   Niklas Rast
 #> 
 
 $ErrorActionPreference = "SilentlyContinue"
-#Use "C:\Windows\Logs" for System Installs and "$env:TEMP" for User Installs
 $logFile = "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\BloatwareRemoval.log"
+$companyName = "YourCompanyNameHere"
 
 #Test if registry folder exists
-if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\FraportAG")) {
-    New-Item -Path "HKLM:\SOFTWARE\" -Name "FraportAG" -Force
+if ($true -ne (test-Path -Path "HKLM:\SOFTWARE\$companyName")) {
+    New-Item -Path "HKLM:\SOFTWARE\" -Name "$companyName" -Force
 }
 
 Start-Transcript -path $logFile
 
-Write-Output "Uninstalling default apps"
-$apps = @(
-    # default Windows 11 apps
+$bloatwareApps = @(
     "Microsoft.PowerAutomateDesktop"
     "Microsoft.Todos"
-    #"Microsoft.OutlookForWindows"
-    "Microsoft.549981C3F5F10" #Cortana
+    "Microsoft.549981C3F5F10"
     "MicrosoftTeams"
     "Microsoft.DevHome"
     "Microsoft.WindowsFeedbackHub"
@@ -68,8 +46,6 @@ $apps = @(
     "MicrosoftCorporationII.QuickAssist"
     "Microsoft.Windows.DevHome"
     "Microsoft.GamingApp"
-    
-    # default Windows 10 apps
     "Microsoft.3DBuilder"
     "Microsoft.Appconnector"
     "Microsoft.BingFinance"
@@ -77,30 +53,22 @@ $apps = @(
     "Microsoft.BingSports"
     "Microsoft.BingTranslator"
     "Microsoft.BingWeather"
-    #"Microsoft.FreshPaint"
     "Microsoft.GamingServices"
     "Microsoft.Microsoft3DViewer"
     "Microsoft.MicrosoftOfficeHub"
-    #"Microsoft.MicrosoftPowerBIForWindows"
     "Microsoft.MicrosoftSolitaireCollection"
     "Microsoft.MicrosoftStickyNotes"
     "Microsoft.MinecraftUWP"
     "Microsoft.NetworkSpeedTest"
     "Microsoft.Office.OneNote"
-    #"Microsoft.OneConnect"
     "Microsoft.People"
     "Microsoft.Print3D"
     "Microsoft.SkypeApp"
     "Microsoft.Wallet"
-    #"Microsoft.Windows.Photos"
-    #"Microsoft.WindowsAlarms"
-    #"Microsoft.WindowsCalculator"
-    #"Microsoft.WindowsCamera"
     "microsoft.windowscommunicationsapps"
     "Microsoft.WindowsMaps"
     "Microsoft.WindowsPhone"
     "Microsoft.WindowsSoundRecorder"
-    #"Microsoft.WindowsStore"   # can't be re-installed, DO NOT REMOVE
     "Microsoft.Xbox.TCUI"
     "Microsoft.XboxApp"
     "Microsoft.XboxGameOverlay"
@@ -118,18 +86,14 @@ $apps = @(
     "Microsoft.OneConnect"
     "Microsoft.WindowsFeedbackHub"
     "Microsoft.Microsoft3DViewer"
-    #"Microsoft.MSPaint"
     "Microsoft.BingFoodAndDrink"
     "Microsoft.BingHealthAndFitness"
     "Microsoft.BingTravel"
     "Microsoft.WindowsReadingList"
     "Microsoft.MixedReality.Portal"
-    #"Microsoft.ScreenSketch"
     "Microsoft.XboxGamingOverlay"
     "Microsoft.YourPhone"
     "Microsoft.Advertising.Xaml"
-
-    #3-Party bloatware
     "2FE3CB00.PicsArt-PhotoStudio"
     "46928bounde.EclipseManager"
     "4DF9E0F8.Netflix"
@@ -177,15 +141,13 @@ $apps = @(
     "AmazonVideo.PrimeVideo"   
 )
 
-foreach ($app in $apps) {
-    Write-Output "Trying to remove $app"
-
+foreach ($app in $bloatwareApps) {
+    Write-Output "Removing $app"
     Get-AppxPackage -Name $app -AllUsers | Remove-AppxPackage -AllUsers
     Get-AppXProvisionedPackage -Online | Where-Object DisplayName -EQ $app | Remove-AppxProvisionedPackage -Online
 }
 
-    #Register package in registry
-    New-Item -Path "HKLM:\SOFTWARE\FraportAG\" -Name "BloatwareRemoval"
-    New-ItemProperty -Path "HKLM:\SOFTWARE\FraportAG\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "3.0.4" -Force
+New-Item -Path "HKLM:\SOFTWARE\$companyName\" -Name "BloatwareRemoval"
+New-ItemProperty -Path "HKLM:\SOFTWARE\$companyName\BloatwareRemoval" -Name "Version" -PropertyType "String" -Value "1.0.0" -Force
 
 Stop-Transcript
