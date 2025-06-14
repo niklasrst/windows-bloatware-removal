@@ -2,6 +2,8 @@
 
 This repo contains an powershell scripts to remove bloatware applications from any Windows 10 or newer installation.
 
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/niklasrst/windows-bloatware-removal/total)
+
 ## Customization
 Change the company name to match your company name for the detection:
 ```powershell
