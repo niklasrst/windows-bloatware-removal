@@ -54,6 +54,7 @@ $bloatwareApps = @(
     "Microsoft.BingTranslator"
     "Microsoft.BingWeather"
     "Microsoft.GamingServices"
+    "Microsoft.Edge.GameAssist"
     "Microsoft.Microsoft3DViewer"
     "Microsoft.MicrosoftOfficeHub"
     "Microsoft.MicrosoftSolitaireCollection"
